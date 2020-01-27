@@ -2,8 +2,7 @@ import { flags, FlagsConfig } from '@salesforce/command';
 import { Messages } from '@salesforce/core';
 
 import { BaseCommand } from '../../lib/BaseCommand';
-import * as asTable from 'as-table'; 
-import * as fs from 'fs'; 
+import * as asTable from 'as-table';
 
 // Initialize Messages with the current plugin directory
 Messages.importMessagesDirectory(__dirname);

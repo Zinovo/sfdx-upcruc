@@ -30,7 +30,7 @@ USAGE
 ```
 <!-- usagestop -->
 <!-- commands -->
-* [`sfdx upcruc:list [-c -d <filepath>] [-i -d <filepath>] -u <string> [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-upcruclist--c--d-filepath--i-undefined--u-string---apiversion-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+* [`sfdx upcruc:list [-c -d <filepath>] [-i undefined] [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-upcruclist--c--d-filepath--i-undefined--u-string---apiversion-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
 
 ## `sfdx upcruc:list [-c -d <filepath>] [-i undefined] [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -59,6 +59,8 @@ OPTIONS
   --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
                                                                                     this command invocation
 ```
+
+_See code: [lib/commands/upcruc/list.js](https://github.com/alpha-bytes/sfdx-upcruc/blob/v0.5.0/lib/commands/upcruc/list.js)_
 <!-- commandsstop -->
 <!-- debugging-your-plugin -->
 # Debugging your plugin

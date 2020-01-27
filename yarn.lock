@@ -3574,9 +3574,9 @@ unset-value@^1.0.0:
     isobject "^3.0.0"
 
 upcruc@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/upcruc/-/upcruc-0.2.1.tgz#f579627c7e1e2e065f188738979ed3e2953a115d"
-  integrity sha512-a8lNj/CUMcKYqWRrBqe7UwM6OCa4gqTbOdelvTZZ2qTfHnS0t8vVvNgJkQNOcg2tHDsP5MSzSoVkKsJ6brcyuw==
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/upcruc/-/upcruc-0.2.2.tgz#c52459eb25de5cba876df0c854d810f6bbdee3cc"
+  integrity sha512-CxDtZKkAVHZgNQVX3LsORuhfZHYL0uh5koM5q+UNoPYdvPUF7YmEtCDkHE5xBIFcYQsV3SBGwHtCGs0+gBNBtw==
   dependencies:
     dotenv "^8.2.0"
     jsforce "^1.9.3"
