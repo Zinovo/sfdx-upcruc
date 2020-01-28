@@ -22,7 +22,7 @@ $ npm install -g sfdx-upcruc
 $ sfdx COMMAND
 running command...
 $ sfdx (-v|--version|version)
-sfdx-upcruc/0.5.0 darwin-x64 node-v10.15.1
+sfdx-upcruc/0.6.0 darwin-x64 node-v10.15.1
 $ sfdx --help [COMMAND]
 USAGE
   $ sfdx COMMAND
@@ -30,23 +30,23 @@ USAGE
 ```
 <!-- usagestop -->
 <!-- commands -->
-* [`sfdx upcruc:list [-c -d <filepath>] [-i undefined] [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-upcruclist--c--d-filepath--i-undefined--u-string---apiversion-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+* [`sfdx upcruc:list [-t -d <directory>] [-i undefined] [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-upcruclist--t--d-directory--i-undefined--u-string---apiversion-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
 
-## `sfdx upcruc:list [-c -d <filepath>] [-i undefined] [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
+## `sfdx upcruc:list [-t -d <directory>] [-i undefined] [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
 ```
 USAGE
-  $ sfdx upcruc:list [-c -d <filepath>] [-i undefined] [-u <string>] [--apiversion <string>] [--json] [--loglevel 
+  $ sfdx upcruc:list [-t -d <directory>] [-i undefined] [-u <string>] [--apiversion <string>] [--json] [--loglevel 
   trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
 OPTIONS
-  -c, --csv                                                                         Create .csv file
-
   -d, --dir=dir                                                                     Directory where output CRUC file(s)
                                                                                     will be created
 
   -i, --ical                                                                        Create a zipped directory of iCal
                                                                                     files for each CRUC
+
+  -t, --tsv                                                                         Create a tab-separated (.tsv) file
 
   -u, --targetusername=targetusername                                               username or alias for the target
                                                                                     org; overrides default target org
@@ -60,7 +60,7 @@ OPTIONS
                                                                                     this command invocation
 ```
 
-_See code: [lib/commands/upcruc/list.js](https://github.com/alpha-bytes/sfdx-upcruc/blob/v0.5.0/lib/commands/upcruc/list.js)_
+_See code: [lib/commands/upcruc/list.js](https://github.com/alpha-bytes/sfdx-upcruc/blob/v0.6.0/lib/commands/upcruc/list.js)_
 <!-- commandsstop -->
 <!-- debugging-your-plugin -->
 # Debugging your plugin
