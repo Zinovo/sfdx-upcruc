@@ -1,7 +1,7 @@
 {
   "name": "sfdx-upcruc",
   "description": "UPcoming CRUCs",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "author": "Kevin Rice",
   "bugs": "https://github.com/alpha-bytes/sfdx-upcruc/issues",
   "dependencies": {
@@ -43,7 +43,12 @@
   ],
   "homepage": "https://github.com/alpha-bytes/sfdx-upcruc",
   "keywords": [
-    "sfdx-plugin"
+    "sfdx-plugin",
+    "sfdx",
+    "CRUC",
+    "critical updates",
+    "salesforce critical updates",
+    "salesforce"
   ],
   "license": "MIT",
   "oclif": {
