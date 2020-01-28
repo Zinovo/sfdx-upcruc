@@ -1,8 +1,9 @@
 sfdx-upcruc 🤢
 ===========
 
-UPcoming CRUCs. Not recommended for those with a weak constitution. 
+Critical Updates. They're a part of life on the Salesforce platform but, let's face it, they can be a bit of a fly in the 'ol ointment. Let's make things easier.
 
+<!--
 [![Version](https://img.shields.io/npm/v/sfdx-upcruc.svg)](https://npmjs.org/package/sfdx-upcruc)
 [![CircleCI](https://circleci.com/gh/alpha-bytes/sfdx-upcruc/tree/master.svg?style=shield)](https://circleci.com/gh/alpha-bytes/sfdx-upcruc/tree/master)
 [![Appveyor CI](https://ci.appveyor.com/api/projects/status/github/alpha-bytes/sfdx-upcruc?branch=master&svg=true)](https://ci.appveyor.com/project/heroku/sfdx-upcruc/branch/master)
@@ -11,78 +12,67 @@ UPcoming CRUCs. Not recommended for those with a weak constitution.
 [![Known Vulnerabilities](https://snyk.io/test/github/alpha-bytes/sfdx-upcruc/badge.svg)](https://snyk.io/test/github/alpha-bytes/sfdx-upcruc)
 [![Downloads/week](https://img.shields.io/npm/dw/sfdx-upcruc.svg)](https://npmjs.org/package/sfdx-upcruc)
 [![License](https://img.shields.io/npm/l/sfdx-upcruc.svg)](https://github.com/alpha-bytes/sfdx-upcruc/blob/master/package.json)
+-->
 
-<!-- toc -->
-* [Debugging your plugin](#debugging-your-plugin)
-<!-- tocstop -->
-<!-- install -->
-<!-- usage -->
-```sh-session
-$ npm install -g sfdx-upcruc
-$ sfdx COMMAND
-running command...
-$ sfdx (-v|--version|version)
-sfdx-upcruc/0.6.0 darwin-x64 node-v10.15.1
-$ sfdx --help [COMMAND]
-USAGE
-  $ sfdx COMMAND
-...
-```
-<!-- usagestop -->
-<!-- commands -->
-* [`sfdx upcruc:list [-t -d <directory>] [-i undefined] [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-upcruclist--t--d-directory--i-undefined--u-string---apiversion-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+## TL;DR
+`sfdx-upcruc`...
 
-## `sfdx upcruc:list [-t -d <directory>] [-i undefined] [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
+* is a plugin for the `sfdx` command line tool ✅
+* can output CRUCs to useful file types (`.tsv`, `.ical`) ✅
+* is easy to integrate into dev pipelines ✅
+* means you never need to deal with CRUCs again! ❌ (sorry)
 
-```
-USAGE
-  $ sfdx upcruc:list [-t -d <directory>] [-i undefined] [-u <string>] [--apiversion <string>] [--json] [--loglevel 
-  trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
+## Installation
 
-OPTIONS
-  -d, --dir=dir                                                                     Directory where output CRUC file(s)
-                                                                                    will be created
-
-  -i, --ical                                                                        Create a zipped directory of iCal
-                                                                                    files for each CRUC
-
-  -t, --tsv                                                                         Create a tab-separated (.tsv) file
-
-  -u, --targetusername=targetusername                                               username or alias for the target
-                                                                                    org; overrides default target org
-
-  --apiversion=apiversion                                                           override the api version used for
-                                                                                    api requests made by this command
-
-  --json                                                                            format output as json
-
-  --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
-                                                                                    this command invocation
+```sh
+# shell (bash, zsh, etc)
+sfdx plugins:install sfdx-upcruc 
 ```
 
-_See code: [lib/commands/upcruc/list.js](https://github.com/alpha-bytes/sfdx-upcruc/blob/v0.6.0/lib/commands/upcruc/list.js)_
-<!-- commandsstop -->
-<!-- debugging-your-plugin -->
-# Debugging your plugin
-We recommend using the Visual Studio Code (VS Code) IDE for your plugin development. Included in the `.vscode` directory of this plugin is a `launch.json` config file, which allows you to attach a debugger to the node process when running your commands.
+## Usage
 
-To debug the `hello:org` command: 
-1. Start the inspector
-  
-If you linked your plugin to the sfdx cli, call your command with the `dev-suspend` switch: 
-```sh-session
-$ sfdx hello:org -u myOrg@example.com --dev-suspend
-```
-  
-Alternatively, to call your command using the `bin/run` script, set the `NODE_OPTIONS` environment variable to `--inspect-brk` when starting the debugger:
-```sh-session
-$ NODE_OPTIONS=--inspect-brk bin/run hello:org -u myOrg@example.com
+### Mean Documentation 😿
+
+```sh
+sfdx upcruc:list -u <username> [-ti -d <directory>] [--json] [--verbose] 
 ```
 
-2. Set some breakpoints in your command code
-3. Click on the Debug icon in the Activity Bar on the side of VS Code to open up the Debug view.
-4. In the upper left hand corner of VS Code, verify that the "Attach to Remote" launch configuration has been chosen.
-5. Hit the green play button to the left of the "Attach to Remote" launch configuration window. The debugger should now be suspended on the first line of the program. 
-6. Hit the green play button at the top middle of VS Code (this play button will be to the right of the play button that you clicked in step #5).
-<br><img src=".images/vscodeScreenshot.png" width="480" height="278"><br>
-Congrats, you are debugging!
+### Friendly Documentation 😸
+`sfdx-upcruc` keeps the command options short and sweet so you can get straight to what you want - that list of upcoming CRUCs!
+
+#### Flags
+Short Flag|Long Flag|Required|Result
+--|--|--|--
+`-u`|`--targetusername`|Yep| username/alias from which to retrieve CRUCs
+`-t`|`--tsv`| | create a tab-separated-value file (.tsv)
+`-i`|`--ical`| | create an ical file (.ical)
+`-d`|`--dir`| Maybe | yes, if `i` or `t` flags are included
+| | `--json` | | print output as `json` rather than a table
+| | `--verbose` | | do not trim cruc cells to space
+
+#### Key/Value Pairs
+In addition to command flags, you may include the following `key=value` strings. They are **never required**. 
+
+Key|Result|Example|Notes
+--|--|--|--
+`fname`| Value will be used as filename for any output (`-ti`) files|`fname=orgCrucs`|Do not include file extensions. We'll do that for you.
+`calprefix`|When creating a .ical file (`-i`), value will preface event names| `calprefix="My Org CRUCs: "`| Remember to include a space after your prefix. We won't do _everything_. 😉
+
+## Important Details
+
+### ICal unique ids
+CRUC events created in `.ical` files will always have an `id` that is **unique to the org from which they were retrieved**. This is really great news for you because, as you generate new `.ical` files in the future, you can simply import them to your calendar application and the old events (should) get updated with the new information.
+
+> For inquiring minds...
+> 
+> The unique ids are generated by hashing a CRUC's full activation url using the `sha-1` algorithm.
+
+### No`.csv`?
+Critical update descriptions may contain commas themselves, so we decided to go with tab-separated instead. If you'd like `.csv` support added in the future ~~yell at us really loudly~~ open an issue in the repo and we promise to take a look. 
+
+### Output is condensed by default
+CRUCs are printed to `stdout` (your terminal window) in table format, where each cell is limited to 50 chars. Use the `--json` or `--verbose` flags if you need the full monty. 
+
+### You mentioned pipelines...
+Indeed. `sfdx-upcruc` prints CRUCs to `stdout` in condensed table format, but you can change that using `--verbose` or `--json` for all your piping and redirection adventures. 
+
