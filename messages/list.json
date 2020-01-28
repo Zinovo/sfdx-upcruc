@@ -1,5 +1,5 @@
 {
-    "flagOutputCsv": "Create .csv file",
+    "flagOutputTsv": "Create a tab-separated (.tsv) file",
     "flagOutputICal": "Create a zipped directory of iCal files for each CRUC",
     "flagOutputDirectory": "Directory where output CRUC file(s) will be created", 
     "flagJson": "Format output as JSON rather than as a table"

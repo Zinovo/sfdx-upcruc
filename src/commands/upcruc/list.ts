@@ -3,6 +3,7 @@ import { Messages } from '@salesforce/core';
 
 import { BaseCommand } from '../../lib/BaseCommand';
 import * as asTable from 'as-table';
+import * as fs from 'fs';
 
 // Initialize Messages with the current plugin directory
 Messages.importMessagesDirectory(__dirname);
@@ -14,9 +15,9 @@ export default class CrucList extends BaseCommand {
   protected static requiresUsername = true;
 
   protected static flagsConfig: FlagsConfig = {
-    'csv': flags.boolean({ description: messages.getMessage('flagOutputCsv'), char: 'c', dependsOn: ['dir'] }), 
+    'tsv': flags.boolean({ description: messages.getMessage('flagOutputTsv'), char: 't', dependsOn: ['dir'] }), 
     'ical': flags.boolean({ description: messages.getMessage('flagOutputICal'), char: 'i', dependsOn: ['dir'] }), 
-    'dir': flags.filepath({ description: messages.getMessage('flagOutputDirectory'), char: 'd' }), 
+    'dir': flags.directory({ description: messages.getMessage('flagOutputDirectory'), char: 'd' }), 
     'json': flags.boolean({ description: 'format output as json'}) // shadow that standard json flag
   };
 
@@ -24,7 +25,7 @@ export default class CrucList extends BaseCommand {
     await this.retrieveCrucs(); 
 
     // conditionally create docs
-    if(this.flags.csv) this.generateCsv(); 
+    if(this.flags.tsv) this.generateTsv(); 
     if(this.flags.ical) this.generateICal();
 
     // print to stdout
@@ -39,7 +40,7 @@ export default class CrucList extends BaseCommand {
             case 'autoActivation':
               return val; 
             case 'activationUrl':
-              return '(output to csv)';
+              return '(output to tsv)';
             default:
               return val.substr(0, 50); 
           }
@@ -51,12 +52,35 @@ export default class CrucList extends BaseCommand {
     process.exit(0); // TODO remove
   }
 
-  private generateCsv(): void {
-    // TODO
+  private generateTsv(): void {
+    let tsv = '';  
+    Object.keys(this.crucs[0]).forEach(key => {
+      tsv += `${key}\t`; 
+    }); 
+    tsv += '\n';
+    this.crucs.forEach(cruc => {
+      Object.entries(cruc).forEach(entry => {
+        tsv += `${sanitize(entry[0], entry[1])}\t`; 
+      });
+      tsv += '\n'; 
+    });
+    
+    let path: string = this.flags.dir;
+    path = (path.endsWith('/') ? path : `${path}/`) + 'crucs.tsv'; 
+    fs.writeFileSync(path, tsv, { encoding: 'utf-8' });
   }
 
   private generateICal(): void {
     // TODO
   }
 
+}
+
+function sanitize(key: string, val: string): string {
+    switch(key){
+      case 'activationUrl':
+         return val;
+      default:
+        return val.replace('\t', ' ').replace('\n', ' ');
+    }
 }
