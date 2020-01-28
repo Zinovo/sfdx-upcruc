@@ -3,12 +3,17 @@ import { Messages } from '@salesforce/core';
 
 import { BaseCommand } from '../../lib/BaseCommand';
 import * as asTable from 'as-table';
+import * as ical from 'ical-generator';
 import * as fs from 'fs';
+import { VarargsConfig } from '@salesforce/command/lib/sfdxCommand';
+const sha1 = require('crypto-js/sha1');  
 
 // Initialize Messages with the current plugin directory
 Messages.importMessagesDirectory(__dirname);
 
 const messages = Messages.loadMessages('sfdx-upcruc', 'list');
+
+const VAR_KEYS = ['fname', 'calprefix'];
 
 export default class CrucList extends BaseCommand {
 
@@ -18,8 +23,17 @@ export default class CrucList extends BaseCommand {
     'tsv': flags.boolean({ description: messages.getMessage('flagOutputTsv'), char: 't', dependsOn: ['dir'] }), 
     'ical': flags.boolean({ description: messages.getMessage('flagOutputICal'), char: 'i', dependsOn: ['dir'] }), 
     'dir': flags.directory({ description: messages.getMessage('flagOutputDirectory'), char: 'd' }), 
-    'json': flags.boolean({ description: 'format output as json'}) // shadow that standard json flag
+    'json': flags.boolean({ description: 'format output as json'}), // shadow that standard json flag
+    'verbose': flags.builtin({ description: 'do not limit length of rows printed to stdout' }), 
   };
+
+  protected static varargs: VarargsConfig = { 
+    required: false, 
+    validator(key, val){
+      if(!VAR_KEYS.includes(key))
+        throw new Error(`${key} is invalid. Allowable keys are: ${VAR_KEYS}`); 
+    }
+  }
 
   public async run(): Promise<void> {
     await this.retrieveCrucs(); 
@@ -40,9 +54,9 @@ export default class CrucList extends BaseCommand {
             case 'autoActivation':
               return val; 
             case 'activationUrl':
-              return '(output to tsv)';
+              return '(run with --verbose to print)';
             default:
-              return val.substr(0, 50); 
+              return this.flags.verbose ? val : val.substr(0, 50); 
           }
         }
       })(this.crucs);
@@ -50,6 +64,19 @@ export default class CrucList extends BaseCommand {
 
     console.log(output); 
     process.exit(0); // TODO remove
+  }
+
+  private getFilename(extension: string): string {
+    const fname = this.varargs[VAR_KEYS[0]]; 
+    if(fname)
+      return `${fname}${extension.startsWith('.') ? extension : '.' + extension}`; 
+      
+    return `upcruc${extension}`;
+  }
+
+  private getEventPrefix(){
+    const prefix = this.varargs[VAR_KEYS[1]]; 
+    return (prefix ? prefix : `Critical Update (${this.org.getUsername()}): `)
   }
 
   private generateTsv(): void {
@@ -65,13 +92,36 @@ export default class CrucList extends BaseCommand {
       tsv += '\n'; 
     });
     
-    let path: string = this.flags.dir;
-    path = (path.endsWith('/') ? path : `${path}/`) + 'crucs.tsv'; 
-    fs.writeFileSync(path, tsv, { encoding: 'utf-8' });
+    fs.writeFileSync(getFilePath(this.flags.dir, this.getFilename('.tsv')), tsv, { encoding: 'utf-8' });
   }
 
   private generateICal(): void {
-    // TODO
+    let evts: ical.EventData[] = []; 
+    this.crucs.forEach((cruc) => {
+      // format data
+      let dt = new Date(cruc.autoActivation),
+          summary = `${this.getEventPrefix()} ${decodeURIComponent((cruc.name.length > 40 ? cruc.name.substr(0, 40) + '...' : cruc.name))}`,
+          fullUrl = `${this.org.getConnection().instanceUrl}${cruc.activationUrl}`,
+          uuid = sha1(fullUrl).toString(); // sha-1 hash, unique for each org domain
+      // create event
+      let event: ical.EventData = {
+        id: uuid, 
+        start: dt,
+        end: dt, 
+        allDay: true, 
+        busystatus: 'free', 
+        summary: summary, 
+        description: `${decodeURIComponent(cruc.description)}\n\nActivation URL:\n${fullUrl}`, 
+        htmlDescription: `<b>${cruc.description}</b><br /><br /><a href="${fullUrl}">Click to begin Activation</a>`
+      }; 
+      evts.push(event); 
+    }); 
+    // create calendard
+    const cal = ical({
+      events: evts
+    }); 
+    // write file
+    cal.saveSync(getFilePath(this.flags.dir, this.getFilename('.ical'))); 
   }
 
 }
@@ -83,4 +133,8 @@ function sanitize(key: string, val: string): string {
       default:
         return val.replace('\t', ' ').replace('\n', ' ');
     }
+}
+
+function getFilePath(path: string, filename: string): string {
+  return `${path.endsWith('/') ? path : path + '/'}${filename}`;
 }
