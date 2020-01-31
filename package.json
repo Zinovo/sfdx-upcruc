@@ -1,9 +1,9 @@
 {
   "name": "sfdx-upcruc",
   "description": "UPcoming CRUCs",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "author": "Kevin Rice",
-  "bugs": "https://github.com/alpha-bytes/sfdx-upcruc/issues",
+  "bugs": "https://github.com/zinovo/sfdx-upcruc/issues",
   "dependencies": {
     "@oclif/command": "^1",
     "@oclif/config": "^1",
@@ -41,7 +41,7 @@
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/alpha-bytes/sfdx-upcruc",
+  "homepage": "https://github.com/zinovo/sfdx-upcruc",
   "keywords": [
     "sfdx-plugin",
     "sfdx",
@@ -63,7 +63,7 @@
       "@oclif/plugin-help"
     ]
   },
-  "repository": "alpha-bytes/sfdx-upcruc",
+  "repository": "zinovo/sfdx-upcruc",
   "scripts": {
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "tslint -p test -t stylish",
