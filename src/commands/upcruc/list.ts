@@ -20,8 +20,8 @@ export default class CrucList extends BaseCommand {
   protected static requiresUsername = true;
 
   protected static flagsConfig: FlagsConfig = {
-    'tsv': flags.boolean({ description: messages.getMessage('flagOutputTsv'), char: 't', dependsOn: ['dir'] }), 
-    'ical': flags.boolean({ description: messages.getMessage('flagOutputICal'), char: 'i', dependsOn: ['dir'] }), 
+    'tsv': flags.boolean({ description: messages.getMessage('flagOutputTsv'), char: 't' }), 
+    'ical': flags.boolean({ description: messages.getMessage('flagOutputICal'), char: 'i' }), 
     'dir': flags.directory({ description: messages.getMessage('flagOutputDirectory'), char: 'd' }), 
     'json': flags.boolean({ description: 'format output as json'}), // shadow that standard json flag
     'verbose': flags.builtin({ description: 'do not limit length of rows printed to stdout' }), 
@@ -74,6 +74,12 @@ export default class CrucList extends BaseCommand {
     return `upcruc${extension}`;
   }
 
+  private getFilePath(filename: string): string {
+    // default to pwd if no dir flag
+    const path = this.flags.dir ? this.flags.dir : process.cwd(); 
+    return `${path.endsWith('/') ? path : path + '/'}${filename}`;
+  }
+
   private getEventPrefix(){
     const prefix = this.varargs[VAR_KEYS[1]]; 
     return (prefix ? prefix : `Critical Update (${this.org.getUsername()}): `)
@@ -92,17 +98,18 @@ export default class CrucList extends BaseCommand {
       tsv += '\n'; 
     });
     
-    fs.writeFileSync(getFilePath(this.flags.dir, this.getFilename('.tsv')), tsv, { encoding: 'utf-8' });
+    fs.writeFileSync(this.getFilePath(this.getFilename('.tsv')), tsv, { encoding: 'utf-8' });
   }
 
   private generateICal(): void {
     let evts: ical.EventData[] = []; 
+    const orgId = this.org.getOrgId(); 
     this.crucs.forEach((cruc) => {
       // format data
       let dt = new Date(cruc.autoActivation),
           summary = `${this.getEventPrefix()} ${decodeURIComponent((cruc.name.length > 40 ? cruc.name.substr(0, 40) + '...' : cruc.name))}`,
           fullUrl = `${this.org.getConnection().instanceUrl}${cruc.activationUrl}`,
-          uuid = sha1(fullUrl).toString(); // sha-1 hash, unique for each org domain
+          uuid = sha1(`${orgId}${cruc.activationUrl}`).toString(); // sha-1 hash, unique for each org domain
       // create event
       let event: ical.EventData = {
         id: uuid, 
@@ -121,7 +128,7 @@ export default class CrucList extends BaseCommand {
       events: evts
     }); 
     // write file
-    cal.saveSync(getFilePath(this.flags.dir, this.getFilename('.ical'))); 
+    cal.saveSync(this.getFilePath(this.getFilename('.ical'))); 
   }
 
 }
@@ -133,8 +140,4 @@ function sanitize(key: string, val: string): string {
       default:
         return val.replace('\t', ' ').replace('\n', ' ');
     }
-}
-
-function getFilePath(path: string, filename: string): string {
-  return `${path.endsWith('/') ? path : path + '/'}${filename}`;
 }

@@ -1,7 +1,7 @@
 {
   "name": "sfdx-upcruc",
   "description": "UPcoming CRUCs",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "author": "Kevin Rice",
   "bugs": "https://github.com/alpha-bytes/sfdx-upcruc/issues",
   "dependencies": {
